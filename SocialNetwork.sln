@@ -5,7 +5,7 @@ VisualStudioVersion = 17.13.35825.156
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialNetwork", "SocialNetwork\SocialNetwork.csproj", "{956950CD-4B38-42C4-A2C7-679B33A9A9C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialNetwork.Datacontracts", "SocialNetwork.Datacontracts\SocialNetwork.Datacontracts.csproj", "{96BCBD0C-5DFD-446B-AA4A-E14CAA4234BB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialNetwork.DataContracts", "SocialNetwork.Datacontracts\SocialNetwork.DataContracts.csproj", "{96BCBD0C-5DFD-446B-AA4A-E14CAA4234BB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

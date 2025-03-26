@@ -1,0 +1,9 @@
+global:
+  scrape_interval: 5s
+
+scrape_configs:
+  - job_name: 'SocialNetwork'
+    static_configs:
+      - targets: ['socialnetwork:9027']
+
+  

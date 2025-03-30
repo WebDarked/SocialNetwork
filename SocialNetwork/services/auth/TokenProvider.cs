@@ -1,6 +1,14 @@
-﻿namespace SocialNetwork.services.auth
+﻿using SocialNetwork.domain;
+
+namespace SocialNetwork.services.auth
 {
-    public class TokenProvider
+    internal sealed class TokenProvider(IConfiguration configuration)
     {
+        public string Create(User user)
+        {
+            string secretKey = configuration["Jwt:Secret"] ?? throw new ArgumentNullException("Jwt secret key is null");
+
+            var secureKey = new SymmetricSecurityKey()
+        }
     }
 }

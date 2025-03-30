@@ -1,15 +1,20 @@
 using Microsoft.EntityFrameworkCore;
+using SocialNetwork.dal.Repositories;
 using SocialNetwork.dal.users;
+using SocialNetwork.domain.users;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddDbContext<SocialNetworkDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("")));
+     options.UseNpgsql(builder.Configuration.GetConnectionString("Database")));
+
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
@@ -19,13 +24,14 @@ await using (var dbContext = scope.ServiceProvider.GetRequiredService<SocialNetw
     await dbContext.Database.EnsureCreatedAsync();
 }
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseAuthorization();
+app.UseAuthentication();
 
 app.MapControllers();
 

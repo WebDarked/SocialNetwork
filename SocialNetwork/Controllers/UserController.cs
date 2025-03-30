@@ -6,7 +6,7 @@ namespace SocialNetwork.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {        
-        [HttpGet("get/[id]")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetUser([FromRoute]Guid userId)
         {
             

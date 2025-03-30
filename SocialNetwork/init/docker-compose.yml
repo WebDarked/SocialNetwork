@@ -3,7 +3,7 @@ services:
 
   portainer:
     container_name: sc-portainer
-    image: portainer:latest
+    image: portainer/portainer-ce:latest
     restart: always    
     command: -H unix:///var/run/docker.sock --admin-password '$$2y$$05$$NqV7Kcqg2ECFffiPJdtrvOjfz3Xg3ovWNlXekKSGqSUOs8Xyvu6SC'
     ports:
@@ -11,45 +11,6 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - portainer-volume:/data
-
-  elasticsearch:
-    container_name: sc-elasticsearch
-    image: elasticsearch:latest
-    environment:
-      - discovery.type=single-node
-    ports:
-      - ${ELASTICSEARCH_PORT:-22204}:9200
-    volumes:
-      - elasticsearch-volume:/usr/share/elasticsearch/data
-
-  kibana:
-    container_name: sc-kibana
-    image: kibana:latest
-    environment:
-      - ELASTICSEARCH_URL=http://elasticsearch:5102
-    ports:
-      - ${KIBANA_PORT:-22205}:5601
-
-  prometheus:
-    container_name: sc-prometheus
-    image: prometheus:latest
-    ports:
-      - ${PROMETHEUS_PORT:-22206}:9090
-    volumes:
-      - prometheus-volume:/prometheus
-      - /prometheus.yml:/etc/prometheus.yml
-
- grafana:
-   image: grafana
-   container_name: sc-grafana
-   restart: unless-stopped
-   ports:
-     - ${GRAFANA_PORT:-22207}:3000
-   links:
-     - prometheus:prometheus
-   volumes:
-     - grafana-volume:/var/lib/grafana
-     - /grafana-datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
 
   sc-postgres:
     container_name: sc-postgres
@@ -59,7 +20,7 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     ports:
-      - ${POSTGRES_PORT:-22351}:5432
+      - 5432:5432
     volumes:
       - postgres-volume:/var/lib/postgresql/data
 
@@ -67,18 +28,10 @@ services:
 volumes:
   portainer-volume:
     name: sc-portainer
-  elasticsearch-volume:
-    name: sc-elasticsearch
-  prometheus-volume:
-    name: sc-prometheus
-  grafana-volume:
-    name: sc-grafana
   postgres-volume:
     name: sc-postgres 
   logs-volume:
     name: sc-logs
 
 networks:
-  default:
-    external:
-      name: sc-network
+  sc:

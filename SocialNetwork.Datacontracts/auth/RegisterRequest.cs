@@ -1,10 +1,10 @@
 ﻿using SocialNetwork.Datacontracts.common;
 
-namespace SocialNetwork.Datacontracts.auth
+namespace SocialNetwork.DataContracts.auth
 {
     public record RegisterRequest : IRequest
     {
-        public RegisterRequest(string firstName, string lastName, DateTime birthday, string city, string email, string aboutMe)
+        public RegisterRequest(string firstName, string lastName, DateTime birthday, string city, string email, string aboutMe, Sex sex)
         {
             FirstName = firstName;
             LastName = lastName;
@@ -12,6 +12,7 @@ namespace SocialNetwork.Datacontracts.auth
             City = city;
             Email = email;
             AboutMe = aboutMe;
+            Sex = sex;
         }
 
         public string AboutMe { get; }
@@ -25,5 +26,7 @@ namespace SocialNetwork.Datacontracts.auth
         public string City { get; }
 
         public string Email { get; }
+
+        public Sex Sex { get; set; }
     }
 }

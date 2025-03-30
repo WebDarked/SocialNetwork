@@ -3,3 +3,4 @@
 /SocialNetwork/obj/*
 /SocialNetwork.Datacontracts/obj/*
 /.idea/.*
+/SocialNetwork.Datacontracts/bin/*

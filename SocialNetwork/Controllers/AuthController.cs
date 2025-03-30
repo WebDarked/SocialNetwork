@@ -1,33 +1,41 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SocialNetwork.Datacontracts.auth;
+using SocialNetwork.DataContracts.auth;
 using SocialNetwork.domain;
-using SocialNetwork.domain.auth;
+using SocialNetwork.domain.users;
+using System.Text.RegularExpressions;
+using SocialNetwork.infrastructure.helpers;
+using Sex = SocialNetwork.domain.Sex;
 
 namespace SocialNetwork.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthController(IAuthRepository authRepository) : ControllerBase
+    public class AuthController(IUserRepository userRepository) : ControllerBase
     {
-        [HttpPost("login")]
-        public async Task<IActionResult> Login(RegisterRequest request)
+        [HttpPost("register")]
+        public async Task<IActionResult> RegisterUser(RegisterRequest request)
         {
-            if (await authRepository.IsUserWithEmailExist(request.Email))
+            if (!Validator.IsEmailValid(request.Email))
+                return BadRequest("Email is not valid");
+
+            if (await userRepository.IsUserWithEmailExist(request.Email))
             {
-                return BadRequest("User already exists");
+                return BadRequest($"User with email {request.Email} already exists");
             }
 
             var user = new User
             {
+                Id = Guid.NewGuid(),
                 Email = request.Email,
                 FirstName = request.FirstName,
                 LastName = request.LastName,
                 Birthday = request.Birthday,
                 City = request.City,
-                AboutMe = request.AboutMe
+                AboutMe = request.AboutMe,
+                Sex = (Sex)request.Sex
             };
 
-            await authRepository.RegisterUser(user);
+            userRepository.RegisterUser(user);
 
             return Ok(new RegisterResponse());
         }

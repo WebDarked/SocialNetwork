@@ -15,7 +15,7 @@
         public string City { get; set; }
 
         public string AboutMe { get; set; }
-        
-        public Guid ProfileId { get; set; }
+
+        public Sex Sex { get; set; }
     }
 }

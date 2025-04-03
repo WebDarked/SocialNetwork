@@ -17,5 +17,6 @@
         public string AboutMe { get; set; }
 
         public Sex Sex { get; set; }
+        public string PasswordHash { get; set; }
     }
 }

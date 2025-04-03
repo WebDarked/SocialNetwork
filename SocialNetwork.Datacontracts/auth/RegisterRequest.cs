@@ -2,31 +2,19 @@
 
 namespace SocialNetwork.DataContracts.auth
 {
-    public record RegisterRequest : IRequest
+    public record RegisterRequest(
+        string FirstName,
+        string LastName,
+        DateTime Birthday,
+        string City,
+        string Email,
+        string AboutMe,
+        Sex Sex,
+        string Password)
+        : IRequest
     {
-        public RegisterRequest(string firstName, string lastName, DateTime birthday, string city, string email, string aboutMe, Sex sex)
-        {
-            FirstName = firstName;
-            LastName = lastName;
-            Birthday = birthday;
-            City = city;
-            Email = email;
-            AboutMe = aboutMe;
-            Sex = sex;
-        }
+        public Sex Sex { get; set; } = Sex;
 
-        public string AboutMe { get; }
-
-        public string FirstName { get; }
-
-        public string LastName { get; }
-
-        public DateTime Birthday { get; }
-
-        public string City { get; }
-
-        public string Email { get; }
-
-        public Sex Sex { get; set; }
+        public string Password { get; set; } = Password;
     }
 }

@@ -20,7 +20,7 @@ namespace SocialNetwork.dal.Repositories
             return user != null;
         }
 
-        public async Task RegisterUser(User user)
+        public async Task AddUser(User user)
         {
             FormattableString sql = $"insert into users values({user.Id}, {user.LastName}, {user.FirstName}, {user.Email}, {user.Birthday}, {user.City}, {user.AboutMe}, {user.Sex})";
             await _context.Database.ExecuteSqlInterpolatedAsync(sql);

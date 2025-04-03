@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Globalization;
+using Microsoft.AspNetCore.Mvc;
 using SocialNetwork.DataContracts.auth;
 using SocialNetwork.domain;
 using SocialNetwork.domain.users;
-using System.Text.RegularExpressions;
 using SocialNetwork.infrastructure.helpers;
 using Sex = SocialNetwork.domain.Sex;
 
@@ -18,6 +18,9 @@ namespace SocialNetwork.Controllers
             if (!Validator.IsEmailValid(request.Email))
                 return BadRequest("Email is not valid");
 
+            if (string.IsNullOrWhiteSpace(request.Password))
+                return BadRequest("Password is incorrect or empty");
+
             if (await userRepository.IsUserWithEmailExist(request.Email))
             {
                 return BadRequest($"User with email {request.Email} already exists");
@@ -32,10 +35,11 @@ namespace SocialNetwork.Controllers
                 Birthday = request.Birthday,
                 City = request.City,
                 AboutMe = request.AboutMe,
-                Sex = (Sex)request.Sex
+                Sex = (Sex)request.Sex,
+                PasswordHash = PasswordHashHelper.HashPassword(request.Password)
             };
 
-            userRepository.RegisterUser(user);
+            await userRepository.AddUser(user);
 
             return Ok(new RegisterResponse());
         }

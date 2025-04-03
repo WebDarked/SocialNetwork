@@ -4,6 +4,6 @@
     {
         Task<bool> IsUserWithEmailExist(string email);
 
-        Task RegisterUser(User user);
+        Task AddUser(User user);
     }
 }

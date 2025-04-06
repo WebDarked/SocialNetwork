@@ -2,6 +2,9 @@ using Microsoft.EntityFrameworkCore;
 using SocialNetwork.dal.Repositories;
 using SocialNetwork.dal.users;
 using SocialNetwork.domain.users;
+using SocialNetwork.infrastructure;
+using SocialNetwork.services;
+using SocialNetwork.services.token;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +13,11 @@ builder.Services.AddDbContext<SocialNetworkDbContext>(options =>
      options.UseNpgsql(builder.Configuration.GetConnectionString("Database")));
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ITokenProvider, TokenProvider>();
+builder.Services.AddScoped<IUserManageService, UserManageService>();
+
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
 
 builder.Services.AddControllers();
 
@@ -32,6 +40,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseAuthorization();
 app.UseAuthentication();
+
+app.UseExceptionHandler();
 
 app.MapControllers();
 

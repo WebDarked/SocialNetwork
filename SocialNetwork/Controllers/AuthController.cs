@@ -1,9 +1,10 @@
-﻿using System.Globalization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SocialNetwork.DataContracts.auth;
 using SocialNetwork.domain;
 using SocialNetwork.domain.users;
 using SocialNetwork.infrastructure.helpers;
+using SocialNetwork.services;
+using RegisterRequest = SocialNetwork.DataContracts.auth.RegisterRequest;
 using Sex = SocialNetwork.domain.Sex;
 
 namespace SocialNetwork.Controllers
@@ -41,7 +42,16 @@ namespace SocialNetwork.Controllers
 
             await userRepository.AddUser(user);
 
-            return Ok(new RegisterResponse());
+            return Ok("User is registered");
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequest request, [FromServices] IUserManageService userManageService)
+        {
+            if (request.Email == null) throw new ArgumentNullException(nameof(request.Email));
+            if (request.Password == null) throw new ArgumentNullException(nameof(request.Password));
+
+            return Ok(await userManageService.Login(request));
         }
     }
 }

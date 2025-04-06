@@ -23,6 +23,7 @@ namespace SocialNetwork.dal.users
                 builder.Property(u => u.City).HasColumnName("city");
                 builder.Property(u => u.AboutMe).HasColumnName("about_me");
                 builder.Property(u => u.Sex).HasColumnName("sex");
+                builder.Property(u => u.PasswordHash).HasColumnName("password_hash");
             });
 
             modelBuilder.Entity<Profile>(builder =>

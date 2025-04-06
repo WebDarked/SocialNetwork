@@ -4,7 +4,12 @@
     {
         public static string HashPassword(string password)
         {
-            throw new NotImplementedException("");
+            return BCrypt.Net.BCrypt.HashPassword(password);
+        }
+
+        public static bool VerifyPassword(string password, string hashedPassword)
+        {
+            return BCrypt.Net.BCrypt.EnhancedVerify(password, hashedPassword);
         }
     }
 }

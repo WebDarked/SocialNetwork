@@ -16,16 +16,22 @@ namespace SocialNetwork.dal.Repositories
 
         public async Task<bool> IsUserWithEmailExist(string email)
         {
-            var user = await _context.Users.FromSqlRaw($"select * from users where email = '{email}'").FirstOrDefaultAsync();
+            var user = await _context.Users.FromSql($"select * from users where email = '{email}'").FirstOrDefaultAsync();
             return user != null;
         }
 
         public async Task AddUser(User user)
         {
-            FormattableString sql = $"insert into users values({user.Id}, {user.LastName}, {user.FirstName}, {user.Email}, {user.Birthday}, {user.City}, {user.AboutMe}, {user.Sex})";
+            FormattableString sql =
+                $@"insert into users values({user.Id}, {user.LastName}, {user.FirstName}, {user.Email}, {user.Birthday}, {user.City},
+                    {user.AboutMe}, {user.Sex}, {user.PasswordHash})";
             await _context.Database.ExecuteSqlInterpolatedAsync(sql);
             await _context.SaveChangesAsync();
+        }
 
+        public async Task<User?> GetUserByEmail(string email)
+        {
+            return await _context.Users.FromSql($"select * from users where email = '{email}'").FirstOrDefaultAsync();
         }
     }
 }

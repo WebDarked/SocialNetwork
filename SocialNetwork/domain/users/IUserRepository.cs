@@ -6,5 +6,7 @@
 
         Task AddUser(User user);
         Task<User?> GetUserByEmail(string requestEmail);
+        Task<User?> GetUserById(Guid id);
+        Task<Profile?> GetProfile(Guid id);
     }
 }

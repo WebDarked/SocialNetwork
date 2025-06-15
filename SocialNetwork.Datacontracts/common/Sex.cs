@@ -1,4 +1,4 @@
-﻿namespace SocialNetwork.DataContracts.auth;
+﻿namespace SocialNetwork.DataContracts.common;
 
 public enum Sex
 {

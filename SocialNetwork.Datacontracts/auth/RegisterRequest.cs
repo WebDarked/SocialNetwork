@@ -1,4 +1,5 @@
 ﻿using SocialNetwork.Datacontracts.common;
+using SocialNetwork.DataContracts.common;
 
 namespace SocialNetwork.DataContracts.auth
 {

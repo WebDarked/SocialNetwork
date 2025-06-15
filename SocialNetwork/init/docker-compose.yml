@@ -1,20 +1,9 @@
 version: '3.4'
 services:
 
-  portainer:
-    container_name: sc-portainer
-    image: portainer/portainer-ce:latest
-    restart: always    
-    command: -H unix:///var/run/docker.sock --admin-password '$$2y$$05$$NqV7Kcqg2ECFffiPJdtrvOjfz3Xg3ovWNlXekKSGqSUOs8Xyvu6SC'
-    ports:
-      - ${PORTAINER_PORT:-22201}:9000
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - portainer-volume:/data
-
   sc-postgres:
     container_name: sc-postgres
-    image: postgres:latest
+    image: postgres:15
     restart: always
     environment:
       - POSTGRES_USER=postgres
@@ -26,8 +15,6 @@ services:
 
 
 volumes:
-  portainer-volume:
-    name: sc-portainer
   postgres-volume:
     name: sc-postgres 
   logs-volume:

@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿
+using Microsoft.EntityFrameworkCore;
+using Npgsql;
 using SocialNetwork.dal.users;
 using SocialNetwork.domain;
 using SocialNetwork.domain.users;
@@ -31,7 +33,23 @@ namespace SocialNetwork.dal.Repositories
 
         public async Task<User?> GetUserByEmail(string email)
         {
-            return await _context.Users.FromSql($"select * from users where email = '{email}'").FirstOrDefaultAsync();
+            var result = await _context.Users
+                .FromSqlInterpolated($"select * from users where email = {email}")
+                .FirstOrDefaultAsync();
+            return result;
+        }
+
+        public async Task<User?> GetUserById(Guid id)
+        {
+            var result = await _context.Users
+                .FromSqlInterpolated($"select * from users where id = {id}")
+                .FirstOrDefaultAsync();
+            return result;
+        }
+
+        public Task<Profile?> GetProfile(Guid id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -4,6 +4,7 @@ using SocialNetwork.domain;
 using SocialNetwork.domain.users;
 using SocialNetwork.infrastructure.helpers;
 using SocialNetwork.services;
+using SocialNetwork.services.exceptions;
 using RegisterRequest = SocialNetwork.DataContracts.auth.RegisterRequest;
 using Sex = SocialNetwork.domain.Sex;
 
@@ -17,7 +18,7 @@ namespace SocialNetwork.Controllers
         public async Task<IActionResult> RegisterUser(RegisterRequest request)
         {
             if (!Validator.IsEmailValid(request.Email))
-                return BadRequest("Email is not valid");
+                return BadRequest(new BaseResponse());
 
             if (string.IsNullOrWhiteSpace(request.Password))
                 return BadRequest("Password is incorrect or empty");
@@ -42,7 +43,7 @@ namespace SocialNetwork.Controllers
 
             await userRepository.AddUser(user);
 
-            return Ok("User is registered");
+            return Ok(new BaseResponse(Error: $"User with {request.Email} is registered"));
         }
 
         [HttpPost("login")]
@@ -51,7 +52,18 @@ namespace SocialNetwork.Controllers
             if (request.Email == null) throw new ArgumentNullException(nameof(request.Email));
             if (request.Password == null) throw new ArgumentNullException(nameof(request.Password));
 
-            return Ok(await userManageService.Login(request));
+            try
+            {
+                return Ok(new BaseResponse(await userManageService.Login(request)));
+            }
+            catch (UserNotFoundException e)
+            {
+                return BadRequest(new BaseResponse(Error: e.Message));
+            }
+            catch (WrongLoginDataException e)
+            {
+                return BadRequest(new BaseResponse(Error: e.Message));
+            }
         }
     }
 }
